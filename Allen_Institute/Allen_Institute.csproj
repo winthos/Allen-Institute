@@ -288,9 +288,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\ButtonManager.cs" />
     <Compile Include="Assets\ColorChanger.cs" />
     <Compile Include="Assets\Scripts\GrabableObject.cs" />
     <Compile Include="Assets\Scripts\ObjectGrabber.cs" />
+    <Compile Include="Assets\SpawnerController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Standard Assets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />

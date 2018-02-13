@@ -34,6 +34,7 @@ public class ObjectGrabber : MonoBehaviour
         if(Input.GetMouseButtonDown(0) && Input.GetMouseButton(1) == false)
         {
             RaycastGrabable();
+            RayCastButton();
         }
 
         RaycastInRange();
@@ -47,6 +48,25 @@ public class ObjectGrabber : MonoBehaviour
         }
     }
 
+    void RayCastButton()
+    {
+        int x = Screen.width / 2;
+        int y = Screen.height / 2;
+
+        Ray ray = mainCamera.GetComponent<Camera>().ScreenPointToRay(new Vector3(x, y));
+
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            if (hit.transform.tag == "Button")
+            {
+                print("thisisthebutton");
+                hit.transform.GetComponent<ButtonManager>().PlaySpawnerAnimation();
+            }
+        }
+
+    }
 
     //change the targeting reticle to show we are in range, also change color of object to random new color
     void RaycastInRange()
@@ -67,7 +87,7 @@ public class ObjectGrabber : MonoBehaviour
 
                 if (CurrentTarget != null)
                 {
-                    if (hit.transform.name != CurrentTarget.transform.name)
+                    if (hit.transform != CurrentTarget.transform)
                     {
                         //first turn off the lerping color, then new target
                         print("differentname");

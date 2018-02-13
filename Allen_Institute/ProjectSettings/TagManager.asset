@@ -8,6 +8,8 @@ TagManager:
   - Reticle
   - InRangeReticle
   - Ball
+  - Button
+  - Spawner
   layers:
   - Default
   - TransparentFX
