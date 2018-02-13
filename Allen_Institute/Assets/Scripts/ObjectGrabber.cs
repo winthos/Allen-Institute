@@ -15,6 +15,9 @@ public class ObjectGrabber : MonoBehaviour
 
     bool ReadyToChangeColors = true;
 
+    public GameObject CurrentTarget = null;
+    public string CurrentTargetName = null;
+
     // Use this for initialization
     void Start()
     {
@@ -35,6 +38,14 @@ public class ObjectGrabber : MonoBehaviour
         }
 
         RaycastInRange();
+
+        if(Input.GetMouseButtonUp(0))
+        {
+           /* if (CurrentTarget != null)
+            {
+                CurrentTarget.GetComponent<ColorChanger>().StopLerpingColor();
+            }*/
+        }
     }
 
 
@@ -53,23 +64,51 @@ public class ObjectGrabber : MonoBehaviour
             //if we are in range to pick up
             if (hit.collider.GetComponent<GrabableObject>() && hit.distance <= GrabableDistance)
             {
+                if(CurrentTargetName == null)
+                CurrentTargetName = hit.transform.gameObject.name;
+
+                if(CurrentTargetName != null)
+                {
+                    if(hit.transform.gameObject.name != CurrentTargetName)
+                    {
+                        //first turn off the lerping color, then new target
+                        print("differentname");
+                    }
+                }
+
+                CurrentTarget = hit.transform.gameObject;
+
                 InRangeReticle.SetActive(true);
                 Reticle.SetActive(false);
 
-                if(ReadyToChangeColors == true)
+                //make current target look at something different
+                if (ReadyToChangeColors == true)
                 {
-                    hit.collider.GetComponent<ColorChanger>().RandomColor();
+                    //print("hellow");
+                    hit.collider.GetComponent<ColorChanger>().StartLerpingColor();
+
+                    if(hit.collider.GetComponent<GrabableObject>().beingLookedAt == false)
+                    hit.collider.GetComponent<GrabableObject>().beingLookedAt = true;
                     ReadyToChangeColors = false;
                 }
+
+
 
             }
 
             //we aren't in range aw
             else
             {
+                if (CurrentTarget != null)
+                {
+                    CurrentTarget.GetComponent<ColorChanger>().StopLerpingColor();
+                    CurrentTarget.GetComponent<GrabableObject>().beingLookedAt = false;
+                }
+
                 ReadyToChangeColors = true;
                 InRangeReticle.SetActive(false);
                 Reticle.SetActive(true);
+                //hit.collider.GetComponent<ColorChanger>().StopLerpingColor();
             }
         }
     }

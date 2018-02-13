@@ -10,6 +10,9 @@ public class GrabableObject : MonoBehaviour
     //public Transform guide;
     public bool isHolding = false;
 
+    public bool readyToChangeColor = true;
+
+    public bool beingLookedAt = false;
 
     // Use this for initialization
     void Start()
@@ -22,6 +25,7 @@ public class GrabableObject : MonoBehaviour
     {
         if (isHolding == true)
         {
+            //readyToChangeColor = false;
 
             gameObject.GetComponent<Rigidbody>().useGravity = false;
             gameObject.GetComponent<Rigidbody>().detectCollisions = true;
@@ -34,12 +38,13 @@ public class GrabableObject : MonoBehaviour
                 isHolding = false;
             }
 
+            //throw the ball
             if (Input.GetMouseButton(1))
             {
                 isHolding = false;
                 //Debug.Log("Trying to throw");
                 gameObject.GetComponent<Rigidbody>().AddForce(HoldPosition.transform.forward * throwForce);
-              
+                //readyToChangeColor = false;
             }
         }
 
@@ -71,9 +76,11 @@ public class GrabableObject : MonoBehaviour
     {
         isHolding = false;
 
-        if(collision.collider.tag == "Ball")
+        if(collision.collider.tag == "Ball")// && readyToChangeColor == true)
         {
             collision.collider.GetComponent<ColorChanger>().RandomColor();
         }
+
+        readyToChangeColor = true;
     }
 }
