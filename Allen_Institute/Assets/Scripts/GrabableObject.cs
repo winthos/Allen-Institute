@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class GrabableObject : MonoBehaviour 
 {
-    float throwForce = 600;
+    public float throwForce = 400; //how hard to throw the ball 
 
-    public GameObject HoldPosition;
-    //public Transform guide;
+    public GameObject HoldPosition; //position the ball is held when picked up
+
     public bool isHolding = false;
 
-    public bool readyToChangeColor = true;
-
-    public bool beingLookedAt = false;
+    public AudioClip[] BounceSounds;
+    public AudioClip ThrowSound;
 
     // Use this for initialization
     void Start()
@@ -25,17 +24,14 @@ public class GrabableObject : MonoBehaviour
     {
         if (isHolding == true)
         {
-            //readyToChangeColor = false;
-
+            //parent this ball to the player's HoldPosition
             gameObject.GetComponent<Rigidbody>().useGravity = false;
-            gameObject.GetComponent<Rigidbody>().detectCollisions = true;
+            gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
             gameObject.transform.parent = HoldPosition.transform;
             gameObject.transform.position = HoldPosition.transform.position;
-           // gameObject.GetComponent<Rigidbody>().isKinematic = true;
-
             gameObject.GetComponent<Rigidbody>().freezeRotation = true;
 
-
+            //drop the ball
             if (Input.GetMouseButtonUp(0))
             {
                 isHolding = false;
@@ -44,48 +40,32 @@ public class GrabableObject : MonoBehaviour
             //throw the ball
             if (Input.GetMouseButton(1))
             {
+                gameObject.GetComponent<AudioSource>().PlayOneShot(ThrowSound);
                 isHolding = false;
-                //Debug.Log("Trying to throw");
                 gameObject.GetComponent<Rigidbody>().AddForce(HoldPosition.transform.forward * throwForce);
-                //readyToChangeColor = false;
+
             }
         }
 
         else
         {
             gameObject.GetComponent<Rigidbody>().freezeRotation = false;
-            //gameObject.GetComponent<Rigidbody>().isKinematic = false;
             gameObject.GetComponent<Rigidbody>().useGravity = true;
             gameObject.transform.parent = null;
         }
-
     }
-    /*
-    void OnMouseDown()
-    {
-
-        //distance between grabable object ok we can use a raycast here
-        if (distance <= 1.5f)
-        {
-            isHolding = true;
-            //guide.transform.position = item.transform.position;
-        }
-    }
-    void OnMouseUp()
-    {
-        isHolding = false;
-    }
-    */
 
     private void OnCollisionEnter(Collision collision)
     {
-        //isHolding = false;
+        //if the ball hits anything, play a bouncing sound
+        int i = Random.Range(0, BounceSounds.Length - 1);
+        gameObject.GetComponent<AudioSource>().PlayOneShot(BounceSounds[i]);
 
-        if(collision.collider.tag == "Ball")// && readyToChangeColor == true)
+        //if this touches another ball, that ball will change a random color
+        if(collision.collider.tag == "Ball")
         {
-            collision.collider.GetComponent<ColorChanger>().RandomColor();
+            collision.collider.GetComponent<BallColorChanger>().RandomColor();
         }
 
-        readyToChangeColor = true;
     }
 }

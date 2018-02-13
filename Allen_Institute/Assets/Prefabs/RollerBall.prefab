@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: 135751452516551866}
   - component: {fileID: 114712690099690958}
   - component: {fileID: 114099463066951302}
+  - component: {fileID: 82288136839691838}
   m_Layer: 0
   m_Name: RollerBall
   m_TagString: Ball
@@ -39,7 +40,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1330636630769774}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.8, y: -1.13, z: 11.25}
+  m_LocalPosition: {x: 4.343, y: -0.259, z: 9.71}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -59,7 +60,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 4b5dce0492bdfb648a389fe390071625, type: 2}
+  - {fileID: 2100000, guid: 7d693c2f12cefc14bb90da022d359765, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -93,7 +94,7 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1330636630769774}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 0.5
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -101,6 +102,86 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!82 &82288136839691838
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1330636630769774}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0.841
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!114 &114099463066951302
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -116,6 +197,7 @@ MonoBehaviour:
   lerpSpeed: 15
   newColor: {r: 0, g: 0, b: 0, a: 0}
   currentColor: {r: 0, g: 0, b: 0, a: 0}
+  grabableObjectComp: {fileID: 0}
 --- !u!114 &114712690099690958
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -127,16 +209,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3834a623afb3364898a2beaf3a13c59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  throwForce: 300
   HoldPosition: {fileID: 0}
   isHolding: 0
-  readyToChangeColor: 1
+  BounceSounds:
+  - {fileID: 8300000, guid: ca0dcf5cde5929b408e76a2656d2b0cb, type: 3}
+  - {fileID: 8300000, guid: 2708ea4d72ed55d4eb2f1ac1cc1f72f3, type: 3}
+  - {fileID: 8300000, guid: 2b7411c0947c2aa47be7cb37da018576, type: 3}
+  - {fileID: 8300000, guid: 2ecb6ad2a26509344a7c0a18d38b6050, type: 3}
+  ThrowSound: {fileID: 8300000, guid: a613980ff20e2e2479762bbee3cc7d5f, type: 3}
 --- !u!135 &135751452516551866
 SphereCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1330636630769774}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 9f93f63d068b08c459038c40fce897d8, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
