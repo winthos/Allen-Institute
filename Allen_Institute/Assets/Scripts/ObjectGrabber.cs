@@ -16,7 +16,6 @@ public class ObjectGrabber : MonoBehaviour
     bool ReadyToChangeColors = true;
 
     public GameObject CurrentTarget = null;
-    public string CurrentTargetName = null;
 
     // Use this for initialization
     void Start()
@@ -32,7 +31,7 @@ public class ObjectGrabber : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButton(0) && Input.GetMouseButton(1) == false)
+        if(Input.GetMouseButtonDown(0) && Input.GetMouseButton(1) == false)
         {
             RaycastGrabable();
         }
@@ -64,17 +63,21 @@ public class ObjectGrabber : MonoBehaviour
             //if we are in range to pick up
             if (hit.collider.GetComponent<GrabableObject>() && hit.distance <= GrabableDistance)
             {
-                if(CurrentTargetName == null)
-                CurrentTargetName = hit.transform.gameObject.name;
 
-                if(CurrentTargetName != null)
+
+                if (CurrentTarget != null)
                 {
-                    if(hit.transform.gameObject.name != CurrentTargetName)
+                    if (hit.transform.name != CurrentTarget.transform.name)
                     {
                         //first turn off the lerping color, then new target
                         print("differentname");
+                        CurrentTarget.GetComponent<ColorChanger>().StopLerpingColor();
+                        ReadyToChangeColors = true;
                     }
                 }
+
+                //if i have a current target, 
+                //if the name of this target is different than the new target
 
                 CurrentTarget = hit.transform.gameObject;
 
@@ -87,8 +90,8 @@ public class ObjectGrabber : MonoBehaviour
                     //print("hellow");
                     hit.collider.GetComponent<ColorChanger>().StartLerpingColor();
 
-                    if(hit.collider.GetComponent<GrabableObject>().beingLookedAt == false)
-                    hit.collider.GetComponent<GrabableObject>().beingLookedAt = true;
+                    if (hit.collider.GetComponent<GrabableObject>().beingLookedAt == false)
+                        hit.collider.GetComponent<GrabableObject>().beingLookedAt = true;
                     ReadyToChangeColors = false;
                 }
 
@@ -109,6 +112,15 @@ public class ObjectGrabber : MonoBehaviour
                 InRangeReticle.SetActive(false);
                 Reticle.SetActive(true);
                 //hit.collider.GetComponent<ColorChanger>().StopLerpingColor();
+            }
+        }
+
+        else
+        {
+            if (CurrentTarget != null)
+            {
+                CurrentTarget.GetComponent<ColorChanger>().StopLerpingColor();
+                CurrentTarget.GetComponent<GrabableObject>().beingLookedAt = false;
             }
         }
     }

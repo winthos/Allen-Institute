@@ -31,6 +31,9 @@ public class GrabableObject : MonoBehaviour
             gameObject.GetComponent<Rigidbody>().detectCollisions = true;
             gameObject.transform.parent = HoldPosition.transform;
             gameObject.transform.position = HoldPosition.transform.position;
+           // gameObject.GetComponent<Rigidbody>().isKinematic = true;
+
+            gameObject.GetComponent<Rigidbody>().freezeRotation = true;
 
 
             if (Input.GetMouseButtonUp(0))
@@ -50,6 +53,8 @@ public class GrabableObject : MonoBehaviour
 
         else
         {
+            gameObject.GetComponent<Rigidbody>().freezeRotation = false;
+            //gameObject.GetComponent<Rigidbody>().isKinematic = false;
             gameObject.GetComponent<Rigidbody>().useGravity = true;
             gameObject.transform.parent = null;
         }
@@ -74,7 +79,7 @@ public class GrabableObject : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        isHolding = false;
+        //isHolding = false;
 
         if(collision.collider.tag == "Ball")// && readyToChangeColor == true)
         {
